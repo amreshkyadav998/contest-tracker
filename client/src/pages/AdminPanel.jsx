@@ -40,7 +40,7 @@ const AdminPanel = () => {
     const newSolution = { contest_name: contestName, site: "Codeforces", youtube_link: solutionLink };
 
     try {
-      const response = await fetch("http://localhost:5000/api/solutions", {
+      const response = await fetch("https://contest-tracker-five.vercel.app/api/solutions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newSolution),
