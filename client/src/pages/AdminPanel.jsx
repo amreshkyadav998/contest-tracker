@@ -11,7 +11,7 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchSolutions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/solutions");
+        const response = await fetch("https://contest-tracker-1.onrender.com/api/solutions");
         if (!response.ok) throw new Error("Failed to fetch solutions");
         const data = await response.json();
         setSolutions(data);
