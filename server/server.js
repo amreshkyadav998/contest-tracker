@@ -5,8 +5,9 @@ import mongoose from "mongoose";
 import cron from "node-cron";
 
 import authRoutes from "./routes/authRoutes.js";
-import contestRoutes from "./routes/contestRoutes.js";
+// import contestRoutes from "./routes/contestRoutes.js";
 import bookmarkRoutes from "./routes/bookmarkRoutes.js";
+import contestRoutes from "./routes/contestRoutes.js"
 
 dotenv.config();
 const app = express();
@@ -20,8 +21,9 @@ mongoose
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/contests", contestRoutes);
+// app.use("/api/contests", contestRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
+app.use("/api/contests", contestRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

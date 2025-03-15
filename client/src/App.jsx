@@ -19,7 +19,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         {isAuthenticated && <Route path="/bookmarks" element={<Bookmarks />} />}
-        {isAuthenticated && user?.isAdmin && <Route path="/admin" element={<AdminPanel />} />}
+        {isAuthenticated && <Route path="/admin" element={<AdminPanel />} />}
         <Route path="/codechef" element={<CodeChefContests />} />
         {!isAuthenticated && <Route path="/login" element={<Login />} />}
         {!isAuthenticated && <Route path="/signup" element={<Signup />} />}

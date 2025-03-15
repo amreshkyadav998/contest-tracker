@@ -10,10 +10,11 @@ router.post('/', auth, async (req, res) => {
     const { id, name, platform, start_time, url } = req.body;
     
     // Check if bookmark already exists
-    const existingBookmark = await Bookmark.findOne({ 
-      userId: req.user.id,
-      contestId: id
-    });
+    const existingBookmark = await Bookmark.exists({ 
+        userId: req.user.id,
+        contestId: id
+      });
+      
     
     if (existingBookmark) {
       return res.status(400).json({ msg: 'Contest already bookmarked' });

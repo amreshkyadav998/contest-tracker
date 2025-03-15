@@ -4,15 +4,14 @@ import User from "../models/User.js";
 import dotenv from "dotenv";
 
 const router = express.Router();
-
-
 dotenv.config();
+
 console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 // Register a new user
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, isAdmin } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -20,19 +19,22 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create new user
+    // Create new user with isAdmin (default to false if not provided)
     const user = new User({
       username,
       email,
       password,
+      isAdmin: isAdmin || false,
     });
 
     await user.save();
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    // Generate JWT token with isAdmin
+    const token = jwt.sign(
+      { userId: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.status(201).json({
       message: "User registered successfully",
@@ -41,6 +43,7 @@ router.post("/register", async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin, // Include isAdmin
       },
     });
   } catch (error) {
@@ -65,10 +68,12 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    // Generate JWT token with isAdmin
+    const token = jwt.sign(
+      { userId: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.json({
       message: "Login successful",
@@ -77,6 +82,7 @@ router.post("/login", async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin, // Include isAdmin
       },
     });
   } catch (error) {

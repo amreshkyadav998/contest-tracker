@@ -50,7 +50,7 @@ const Navbar = () => {
         <div className="hidden md:flex gap-4 md:mr-[-90px]">
           <Link to="/" className="hover:underline mt-2">Home</Link>
           {isAuthenticated && <Link to="/bookmarks" className="hover:underline mt-2">Bookmarks</Link>}
-          {isAuthenticated && user?.isAdmin && <Link to="/admin" className="hover:underline mt-2">Admin</Link>}
+          {isAuthenticated && <Link to="/admin" className="hover:underline mt-2">Admin</Link>}
           <Link to="/codechef" className="hover:underline mt-2">CodeChef</Link>
           {isAuthenticated ? (
             <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded">
@@ -73,7 +73,7 @@ const Navbar = () => {
         <div className="md:hidden flex flex-col items-center gap-2 mt-4">
           <Link to="/" className="hover:underline" onClick={() => setIsOpen(false)}>Home</Link>
           {isAuthenticated && <Link to="/bookmarks" className="hover:underline" onClick={() => setIsOpen(false)}>Bookmarks</Link>}
-          {isAuthenticated && user?.isAdmin && <Link to="/admin" className="hover:underline" onClick={() => setIsOpen(false)}>Admin</Link>}
+          {isAuthenticated  && <Link to="/admin" className="hover:underline" onClick={() => setIsOpen(false)}>Admin</Link>}
           <Link to="/codechef" className="hover:underline" onClick={() => setIsOpen(false)}>CodeChef</Link>
           <button onClick={toggleDarkMode} className="bg-gray-700 px-4 py-2 rounded w-full text-center">
             {darkMode ? "Light Mode" : "Dark Mode"}

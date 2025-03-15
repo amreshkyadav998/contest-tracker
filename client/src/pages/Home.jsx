@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 const platforms = {
   Codeforces: "https://codeforces.com/api/contest.list",
   LeetCode: "http://leetcode-contest-api.fronte.io",
-  CodeChef: "https://corsproxy.io/?https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=all",
+  CodeChef: "http://localhost:5000/api/contests/full-data",
 };
 
 const ContestList = () => {
@@ -16,49 +16,77 @@ const ContestList = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(Object.keys(platforms));
   const [bookmarked, setBookmarked] = useState([]);
 
+  // Define togglePlatform to handle platform selection
+  const togglePlatform = (platform) => {
+    setSelectedPlatforms((prevSelectedPlatforms) => {
+      if (prevSelectedPlatforms.includes(platform)) {
+        // Remove platform from selectedPlatforms
+        return prevSelectedPlatforms.filter((p) => p !== platform);
+      } else {
+        // Add platform to selectedPlatforms
+        return [...prevSelectedPlatforms, platform];
+      }
+    });
+  };
+
+  // Fetch contests from the selected platforms
   const fetchContests = async () => {
     let allContests = [];
     setLoading(true);
-
+  
     await Promise.all(
       selectedPlatforms.map(async (platform) => {
         try {
           console.log(`Fetching ${platform} contests from: ${platforms[platform]}`);
           const response = await fetch(platforms[platform]);
-
           const data = await response.json();
           console.log(`${platform} data:`, data);
+  
           let contestsFromAPI = [];
-
+  
           if (platform === "Codeforces" && data.status === "OK") {
             contestsFromAPI = data.result.map((contest) => ({
               id: contest.id,
               name: contest.name,
               start_time: new Date(contest.startTimeSeconds * 1000),
               url: `https://codeforces.com/contest/${contest.id}`,
-              platform: "Codeforces"
+              platform: "Codeforces",
             }));
+          } else if (platform === "CodeChef") {
+            contestsFromAPI = [
+              {
+                id: data.contest_code,
+                name: data.contest_name,
+                start_time: new Date(data.contest_start_date_iso),
+                end_time: new Date(data.contest_end_date_iso),
+                duration: data.contest_duration,
+                url: `https://www.codechef.com/${data.contest_code}`,
+                platform: "CodeChef",
+                participants: data.distinct_users,
+              },
+            ];
           }
-          // Add similar mappings for LeetCode and CodeChef here
-          
+          // Add LeetCode fetch logic when backend API is available
+  
           allContests = [...allContests, ...contestsFromAPI];
         } catch (error) {
           console.error(`Error fetching ${platform}:`, error);
         }
       })
     );
-    
+  
     setLoading(false);
-    return allContests;
+    return allContests.sort((a, b) => a.start_time - b.start_time);
   };
+  
 
   // Fetch bookmarks from backend API
   const fetchBookmarks = async () => {
     if (!user || !token) return;
-    
+
     try {
       const res = await axios.get("http://localhost:5000/api/bookmarks", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setBookmarked(res.data);
     } catch (error) {
@@ -70,24 +98,18 @@ const ContestList = () => {
   useEffect(() => {
     const loadContests = async () => {
       setError(null);
-      let fetchedContests = await fetchContests();
-      fetchedContests.sort((a, b) => a.start_time - b.start_time);
+      const fetchedContests = await fetchContests();
       setContests(fetchedContests);
     };
-
+  
     loadContests();
   }, [selectedPlatforms]);
+  
 
   // Fetch bookmarks when user or token changes
   useEffect(() => {
     fetchBookmarks();
   }, [user, token]);
-
-  const togglePlatform = (platform) => {
-    setSelectedPlatforms((prev) =>
-      prev.includes(platform) ? prev.filter((p) => p !== platform) : [...prev, platform]
-    );
-  };
 
   const toggleBookmark = async (contest) => {
     if (!user || !token) {
@@ -96,22 +118,32 @@ const ContestList = () => {
     }
 
     try {
-      const isBookmarked = bookmarked.some((b) => b.id === contest.id);
-      
-      if (isBookmarked) {
-        // Remove bookmark
-        await axios.delete(`http://localhost:5000/api/bookmarks/${contest.id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setBookmarked(prev => prev.filter(b => b.id !== contest.id));
+      const isBookmarked = bookmarked.some((b) => b.contestId === contest.id);
+
+      if (contest.platform === "CodeChef") {
+        // Handle CodeChef bookmarking differently
+        alert(`Bookmarking for CodeChef contests works differently.`);
+        // Perform specific logic for CodeChef contests
       } else {
-        // Add bookmark
-        const { data } = await axios.post(
-          "http://localhost:5000/api/bookmarks", 
-          contest, 
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setBookmarked(prev => [...prev, data]);
+        if (isBookmarked) {
+          await axios.delete(`http://localhost:5000/api/bookmarks/${contest.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setBookmarked((prev) => prev.filter((b) => b.contestId !== contest.id));
+        } else {
+          const { data } = await axios.post(
+            "http://localhost:5000/api/bookmarks",
+            {
+              id: contest.id,
+              name: contest.name,
+              platform: contest.platform,
+              start_time: contest.start_time,
+              url: contest.url,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setBookmarked((prev) => [...prev, data]);
+        }
       }
     } catch (error) {
       console.error("Error toggling bookmark:", error);
@@ -125,7 +157,7 @@ const ContestList = () => {
 
   // Helper function to check if a contest is bookmarked
   const isContestBookmarked = (contestId) => {
-    return bookmarked.some(b => b.id === contestId || b._id === contestId);
+    return bookmarked.some((b) => b.id === contestId || b._id === contestId);
   };
 
   return (
@@ -164,9 +196,7 @@ const ContestList = () => {
               <button
                 onClick={() => toggleBookmark(contest)}
                 className={`ml-4 p-2 rounded-md ${
-                  isContestBookmarked(contest.id) 
-                    ? "bg-yellow-400 text-white" 
-                    : "bg-yellow-400"
+                  isContestBookmarked(contest.id) ? "bg-yellow-400 text-white" : "bg-yellow-400"
                 }`}
               >
                 {isContestBookmarked(contest.id) ? "Unbookmark" : "Bookmark"}
@@ -193,9 +223,7 @@ const ContestList = () => {
               <button
                 onClick={() => toggleBookmark(contest)}
                 className={`ml-4 p-2 rounded-md ${
-                  isContestBookmarked(contest.id) 
-                    ? "bg-yellow-400 text-white" 
-                    : "bg-yellow-400"
+                  isContestBookmarked(contest.id) ? "bg-yellow-400 text-white" : "bg-yellow-400"
                 }`}
               >
                 {isContestBookmarked(contest.id) ? "Unbookmark" : "Bookmark"}
