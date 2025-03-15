@@ -11,22 +11,22 @@ const Bookmarks = () => {
 
   useEffect(() => {
     const fetchBookmarks = async () => {
-      if (!user || !token) return;
-      
-      try {
-        const res = await axios.get("http://localhost:5000/api/bookmarks", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-    
-        // Ensure only necessary fields are stored
-        setBookmarked(res.data.map(({ contestId, name, platform, start_time, url }) => ({
-          contestId, name, platform, start_time, url
-        })));
-      } catch (error) {
-        console.error("Failed to fetch bookmarks:", error);
-      }
-    };
-    
+  if (!user || !token) return;
+  
+  try {
+    const res = await axios.get("http://localhost:5000/api/bookmarks", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    // Ensure only necessary fields are stored
+    setBookmarked(res.data.map(({ contestId, name, platform, start_time, url }) => ({
+      contestId, name, platform, start_time, url
+    })));
+  } catch (error) {
+    console.error("Failed to fetch bookmarks:", error);
+  }
+};
+
 
     fetchBookmarks();
   }, [user, token]);
