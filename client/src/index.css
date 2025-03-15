@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+/* Default Light Mode */
+body {
+  @apply bg-white text-black transition-colors duration-300;
+}
+
+/* Dark Mode */
+.dark body {
+  @apply bg-gray-900 text-white;
+}
+
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

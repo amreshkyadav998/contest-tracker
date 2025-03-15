@@ -2,11 +2,11 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import axios from "axios";
 import cron from "node-cron";
-import Contest from "./models/Contest.js";
+
+import authRoutes from "./routes/authRoutes.js";
 import contestRoutes from "./routes/contestRoutes.js";
-import solutionRoutes from "./routes/solutionRoutes.js";
+import bookmarkRoutes from "./routes/bookmarkRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -18,32 +18,10 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Error:", err));
 
-// Fetch LeetCode contests every 6 hours
-cron.schedule("0 */6 * * *", async () => {
-  try {
-    console.log("📡 Fetching LeetCode contest data...");
-    const response = await axios.get("https://leetcode.com/contest/api/list/");
-    
-    if (!response.data || !response.data.contests) {
-      throw new Error("Invalid API response");
-    }
-
-    const contests = response.data.contests.map(({ title, start_time }) => ({
-      contest_name: title,
-      start_time,
-    }));
-
-    await Contest.deleteMany({});
-    await Contest.insertMany(contests);
-
-    console.log("✅ Updated LeetCode Contests Data");
-  } catch (error) {
-    console.error("❌ Error fetching contests:", error);
-  }
-});
-
+// Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/contests", contestRoutes);
-app.use("/api/solutions", solutionRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
