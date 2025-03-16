@@ -138,7 +138,7 @@ TLE Tracker is a **MERN stack**-based platform designed for tracking competitive
 ---
 
 ## Contributors
-- **Chandrakesh Yadav** (Frontend Developer, MERN Stack Developer)
+- **Amresh Yadav** (Frontend Developer, MERN Stack Developer)
 
 ---
 
