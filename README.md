@@ -1,24 +1,30 @@
 # TLE Tracker
 
+## 🎥 Live Demo
 
-## Live Demo
 Watch the full demo here: [TLE Tracker Demo](https://drive.google.com/drive/folders/1qGJR0v0uTknivP9c0NLtYwocIjtw6eI1?usp=drive_link)
-
-## Overview
-TLE Tracker is a **MERN stack**-based platform designed for tracking competitive programming contests from platforms like **CodeChef, CodeForces, and LeetCode**. It includes features such as:
-
-- **Bookmarking contests** (with authentication)
-- **JWT-based authentication**
-- **Admin panel for video uploads**
-- **Dark mode support**
-- **Fully responsive design**
-- **Loader animation for smooth UX**
-
 
 ---
 
-## Tech Stack
+## 🚀 Overview
+
+TLE Tracker is a **MERN stack**-based platform designed to track competitive programming contests from **CodeChef, CodeForces, and LeetCode**. It includes features such as:
+
+✅ **Bookmarking contests** (with authentication)\
+✅ **JWT-based authentication**\
+✅ **Admin panel for video uploads**\
+✅ **Dark mode support**\
+✅ **Fully responsive design**\
+✅ **Loader animation for smooth UX**\
+✅ **Automated contest fetching via cron jobs**\
+✅ **YouTube integration for contest solution videos**
+
+---
+
+## 🛠 Tech Stack
+
 ### **Frontend:**
+
 - React.js (with Vite for fast builds)
 - Tailwind CSS for styling
 - React Router for navigation
@@ -26,6 +32,7 @@ TLE Tracker is a **MERN stack**-based platform designed for tracking competitive
 - React Icons for UI enhancements
 
 ### **Backend:**
+
 - Express.js (Node.js framework)
 - MongoDB (via Mongoose for database operations)
 - JWT for authentication
@@ -34,41 +41,62 @@ TLE Tracker is a **MERN stack**-based platform designed for tracking competitive
 
 ---
 
-## Features
-### **1. Contest Fetching**
-- The backend fetches contest details from **CodeChef, CodeForces, and LeetCode APIs**.
-- Data is then displayed dynamically on the frontend.
+## 📌 API Endpoints (Server Routes)
 
-### **2. Authentication**
-- User authentication is implemented using **JWT (JSON Web Token)**.
-- Users need to log in before performing actions like bookmarking contests.
+### **Contest APIs**
 
-### **3. Bookmarking System**
-- Users can bookmark contests for later reference.
-- If a user tries to bookmark without logging in, a **pop-up message** appears prompting them to log in first.
-- Users can remove bookmarks anytime from the **Bookmarks Page**.
+| **Method** | **Endpoint**               | **Description**                         |
+|-----------|--------------------------|-----------------------------------------|
+| GET       | `/api/contests`           | Fetch all upcoming contests            |
+| GET       | `/api/contests/:id`       | Fetch contest details by ID            |
+| GET       | `/api/contests/all`  | Fetch CodeChef contests via API        |
+| GET       | `/api/contests/all`| Fetch CodeForces contests via API      |
+| GET       | `/api/contests/all`  | Fetch LeetCode contests via GraphQL API |
 
-### **4. Admin Panel**
-- Admins can upload contest-related **video links**.
-- Once uploaded, the video link will appear on the **contest page** for users.
+### **User & Authentication APIs**
 
-### **5. Dark Mode**
-- Users can toggle between **light and dark mode** for a better viewing experience.
+| **Method** | **Endpoint**           | **Description**                        |
+|-----------|------------------------|----------------------------------------|
+| POST      | `/api/auth/register`    | Register a new user                   |
+| POST      | `/api/auth/login`       | Login user and return JWT             |
 
-### **6. Responsive Design**
-- The website is fully optimized for **mobile, tablet, and desktop**.
+### **Bookmark APIs**
 
-### **7. Loader Animation**
-- A **loader animation** is implemented to enhance the user experience while data is being fetched.
+| **Method** | **Endpoint**           | **Description**                        |
+|-----------|------------------------|----------------------------------------|
+| POST      | `/api/bookmarks`        | Add contest to bookmarks (Auth)       |
+| GET       | `/api/bookmarks`        | Fetch user bookmarks (Auth)           |
+| DELETE    | `/api/bookmarks/:id`    | Remove contest from bookmarks (Auth)  |
+
+### **Solution APIs**
+
+| **Method** | **Endpoint**           | **Description**                        |
+|-----------|------------------------|----------------------------------------|
+| POST      | `/api/solutions`        | Add a contest solution (Admin)        |
+| GET       | `/api/solutions`        | Fetch contest solutions               |
+
+### **Contest Fetching APIs**
+
+| **Platform**    | **API Endpoint** |
+|----------------|----------------|
+| **CodeChef**   | [`https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=all`](https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=all) |
+| **CodeForces** | [`https://codeforces.com/api/contest.list`](https://codeforces.com/api/contest.list) |
+| **LeetCode**   | Uses GraphQL at [`https://leetcode.com/graphql`](https://leetcode.com/graphql) |
+
+### **Cron Jobs**
+
+- **Automated contest fetching** runs every few hours to update contest lists from CodeChef, CodeForces, and LeetCode.
+- **YouTube video sync** automatically fetches the latest contest solution videos.
 
 ---
 
-## Installation & Setup
+## ⚙ Installation & Setup
+
 ### **Backend**
+
 1. Clone the repository and navigate to the backend folder:
    ```bash
-   git clone https://github.com/your-repo/tle-tracker.git
-   cd tle-tracker/server
+   git clone https://github.com/amreshkyadav998/contest-tracker.git/server
    ```
 2. Install dependencies:
    ```bash
@@ -81,9 +109,10 @@ TLE Tracker is a **MERN stack**-based platform designed for tracking competitive
    ```
 
 ### **Frontend**
+
 1. Navigate to the frontend folder:
    ```bash
-   cd tle-tracker/client
+   cd client
    ```
 2. Install dependencies:
    ```bash
@@ -96,52 +125,18 @@ TLE Tracker is a **MERN stack**-based platform designed for tracking competitive
 
 ---
 
-## Dependencies
-### **Backend**
-```json
-{
-  "axios": "^1.8.3",
-  "bcryptjs": "^3.0.2",
-  "cors": "^2.8.5",
-  "dotenv": "^16.4.7",
-  "express": "^4.21.2",
-  "fs": "^0.0.1-security",
-  "googleapis": "^146.0.0",
-  "jsonwebtoken": "^9.0.2",
-  "mongoose": "^8.12.1",
-  "node-cron": "^3.0.3",
-  "nodemon": "^3.1.9",
-  "path": "^0.12.7"
-}
-```
+## 🔗 Future Improvements
 
-### **Frontend**
-```json
-{
-  "react": "^19.0.0",
-  "react-dom": "^19.0.0",
-  "react-hot-toast": "^2.5.2",
-  "react-icons": "^5.5.0",
-  "react-router-dom": "^7.3.0",
-  "tailwindcss": "^3.4.17",
-  "three": "^0.174.0"
-}
-```
+- **User Profile Management** (Track user activity)
+- **Push Notifications** (Upcoming contest alerts)
+- **Leaderboard System** (Competitive tracking)
+- **YouTube Video Sync** (Auto-fetch latest videos via YouTube API)
 
 ---
 
-## Future Improvements
-- **Profile management** (to track user activity)
-- **Push notifications** for upcoming contests
-- **Leaderboard system** for competitive tracking
+## 👥 Contributors
 
----
+- **Amresh Yadav** (Frontend Developer, MERN Stack Developer)  
 
-## Contributors
-- **Amresh Yadav** (Frontend Developer, MERN Stack Developer)
-
----
-
-### **License**
-This project is licensed under **MIT License**.
+---.
 
