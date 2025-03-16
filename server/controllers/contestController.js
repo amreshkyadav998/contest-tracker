@@ -1,27 +1,24 @@
-import axios from "axios";
-import Contest from "../models/chefmodel.js";
+import fs from "fs";
+import path from "path";
+import Contest from "../models/Contest.js";
 
-// Fetch and save the entire API response
-export const fetchAndSaveContests = async (req, res) => {
+const DATA_FILE = path.resolve("server/utils/data.json");
+
+export const saveContestsToDB = async (req, res) => {
   try {
-    const response = await axios.get(
-      "https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=all"
-    );
-
-    if (!response.data) {
-      return res.status(400).json({ message: "Invalid API response" });
+    if (!fs.existsSync(DATA_FILE)) {
+      return res.status(400).json({ error: "No contest data available" });
     }
 
-    // Store the entire response in the database
-    await Contest.findOneAndUpdate(
-      {}, // Empty filter means it will update the first document found
-      { raw_data: response.data },
-      { upsert: true, new: true }
-    );
+    const contestData = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
 
-    res.status(200).json({ message: "Contests data stored successfully" });
+    // Save contests to MongoDB
+    await Contest.deleteMany({});
+    await Contest.insertMany([...contestData.present_contests, ...contestData.future_contests, ...contestData.past_contests]);
+
+    res.json({ message: "✅ Contests saved to database" });
   } catch (error) {
-    console.error("Error fetching CodeChef contests:", error);
+    console.error("❌ Error saving to database:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
