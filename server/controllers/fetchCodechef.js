@@ -18,14 +18,19 @@ export const fetchCodeChefContests = async () => {
 
         const now = new Date();
 
-        const upcomingContests = response.data.future_contests.map((contest) => ({
-            title: contest.contest_name,
-            platform: "CodeChef",
-            startTime: new Date(contest.contest_start_date_iso),
-            endTime: new Date(contest.contest_end_date_iso),
-            url: `https://www.codechef.com/${contest.contest_code}`,
-            status: "UPCOMING",
-        }));
+        const upcomingContests = response.data.future_contests.map((contest) => {
+            const startTime = new Date(contest.contest_start_date_iso);
+            return {
+                title: contest.contest_name,
+                platform: "CodeChef",
+                startTime,
+                endTime: new Date(contest.contest_end_date_iso),
+                url: `https://www.codechef.com/${contest.contest_code}`,
+                status: "UPCOMING",
+                timeRemaining: Math.floor((startTime - new Date()) / 1000) // Calculate time in seconds
+            };
+        });
+        
 
         const pastContests = response.data.past_contests.map((contest) => ({
             title: contest.contest_name,

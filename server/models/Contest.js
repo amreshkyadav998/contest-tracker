@@ -33,4 +33,10 @@ const ContestSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-export default mongoose.model('Contest', ContestSchema);
+// Virtual field to calculate time remaining
+ContestSchema.virtual("timeRemaining").get(function () {
+    const now = new Date();
+    return this.startTime > now ? Math.floor((this.startTime - now) / 1000) : 0;
+});
+
+export default mongoose.model("Contest", ContestSchema);

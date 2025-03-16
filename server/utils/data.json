@@ -237,7 +237,7 @@
       "contest_end_date_iso": "2027-01-01T01:30:00+05:30",
       "contest_duration": "90",
       "problem_count": 30,
-      "distinct_users": 36171
+      "distinct_users": 36227
     },
     {
       "contest_code": "basic-java",
@@ -248,7 +248,7 @@
       "contest_end_date_iso": "2027-01-01T01:30:00+05:30",
       "contest_duration": "90",
       "problem_count": 30,
-      "distinct_users": 33457
+      "distinct_users": 33506
     },
     {
       "contest_code": "basic-c-language",
@@ -259,7 +259,7 @@
       "contest_end_date_iso": "2027-01-01T01:30:00+05:30",
       "contest_duration": "90",
       "problem_count": 30,
-      "distinct_users": 26558
+      "distinct_users": 26576
     },
     {
       "contest_code": "basic-c-plus-plus",
@@ -270,7 +270,7 @@
       "contest_end_date_iso": "2027-01-01T01:30:00+05:30",
       "contest_duration": "90",
       "problem_count": 30,
-      "distinct_users": 21684
+      "distinct_users": 21701
     },
     {
       "contest_code": "basic-sql",
@@ -281,7 +281,7 @@
       "contest_end_date_iso": "2027-01-01T01:00:00+05:30",
       "contest_duration": "60",
       "problem_count": 17,
-      "distinct_users": 10147
+      "distinct_users": 10159
     },
     {
       "contest_code": "operating-systems",
@@ -292,7 +292,7 @@
       "contest_end_date_iso": "2027-01-01T00:45:00+05:30",
       "contest_duration": "45",
       "problem_count": 30,
-      "distinct_users": 7090
+      "distinct_users": 7097
     },
     {
       "contest_code": "c-language-dsa",
@@ -303,7 +303,7 @@
       "contest_end_date_iso": "2027-01-01T02:00:00+05:30",
       "contest_duration": "120",
       "problem_count": 28,
-      "distinct_users": 5930
+      "distinct_users": 5934
     }
   ],
   "banners": [

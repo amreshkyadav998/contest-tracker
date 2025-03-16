@@ -1,39 +1,12 @@
 import mongoose from 'mongoose';
 
 const BookmarkSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'users',
-    required: true
-  },
-  contestId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  platform: {
-    type: String,
-    required: true
-  },
-  startTime: {
-    type: Date,
-    required: true
-  },
-  url: {
-    type: String,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  contestId: { type: String, required: true },
+  title: { type: String, required: true },
+  platform: { type: String, required: true },
+  startTime: { type: Date, required: true },
+  url: { type: String, required: true },
+}, { timestamps: true });
 
-// Create a compound index to prevent duplicate bookmarks
-BookmarkSchema.index({ userId: 1, contestId: 1 }, { unique: true });
-
-const Bookmark = mongoose.model('Bookmark', BookmarkSchema);
-export default Bookmark;
+export default mongoose.model('Bookmark', BookmarkSchema);
