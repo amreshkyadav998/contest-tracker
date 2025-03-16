@@ -7,10 +7,10 @@ const BookmarkSchema = new mongoose.Schema({
     required: true
   },
   contestId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  name: {
+  title: {
     type: String,
     required: true
   },
@@ -18,7 +18,7 @@ const BookmarkSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  start_time: {
+  startTime: {
     type: Date,
     required: true
   },

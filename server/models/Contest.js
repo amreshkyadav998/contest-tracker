@@ -1,14 +1,36 @@
 import mongoose from "mongoose";
 
-const contestSchema = new mongoose.Schema({
-  contest_code: String,
-  contest_name: String,
-  contest_start_date: String,
-  contest_end_date: String,
-  contest_start_date_iso: String,
-  contest_end_date_iso: String,
-  contest_duration: String,
-  distinct_users: Number,
-});
+const ContestSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    platform: {
+        type: String,
+        required: true,
+        enum: ['Codeforces', 'CodeChef', 'LeetCode']
+    },
+    startTime: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['UPCOMING', 'PAST'],
+        required: true
+    },
+    solutionLink: {
+        type: String,
+        default: null
+    }
+}, { timestamps: true });
 
-export default mongoose.model("Contest", contestSchema);
+export default mongoose.model('Contest', ContestSchema);

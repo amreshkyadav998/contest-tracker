@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 import { fileURLToPath } from "url";
+import cron from "node-cron";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,7 +29,8 @@ const fetchAndSaveContests = async () => {
   }
 };
 
-// Call function immediately (or schedule it via cron)
-fetchAndSaveContests();
+
+cron.schedule("0 * * * *", fetchAndSaveContests);
+
 
 export default fetchAndSaveContests;

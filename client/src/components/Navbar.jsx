@@ -51,7 +51,7 @@ const Navbar = () => {
           <Link to="/" className="hover:underline mt-2">Home</Link>
           {isAuthenticated && <Link to="/bookmarks" className="hover:underline mt-2">Bookmarks</Link>}
           {isAuthenticated && <Link to="/admin" className="hover:underline mt-2">Admin</Link>}
-          <Link to="/codechef" className="hover:underline mt-2">CodeChef</Link>
+          {/* <Link to="/codechef" className="hover:underline mt-2">CodeChef</Link> */}
           {isAuthenticated ? (
             <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded">
               Logout
@@ -74,7 +74,7 @@ const Navbar = () => {
           <Link to="/" className="hover:underline" onClick={() => setIsOpen(false)}>Home</Link>
           {isAuthenticated && <Link to="/bookmarks" className="hover:underline" onClick={() => setIsOpen(false)}>Bookmarks</Link>}
           {isAuthenticated  && <Link to="/admin" className="hover:underline" onClick={() => setIsOpen(false)}>Admin</Link>}
-          <Link to="/codechef" className="hover:underline" onClick={() => setIsOpen(false)}>CodeChef</Link>
+          {/* <Link to="/codechef" className="hover:underline" onClick={() => setIsOpen(false)}>CodeChef</Link> */}
           <button onClick={toggleDarkMode} className="bg-gray-700 px-4 py-2 rounded w-full text-center">
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>

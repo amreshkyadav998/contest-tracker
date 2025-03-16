@@ -8,6 +8,7 @@ import CodeChefContests from "./pages/codechefContest";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthContext } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 
 const App = () => {
@@ -16,11 +17,12 @@ const App = () => {
   return (
     <Router>
       <Navbar />
+      <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<Home />} />
         {isAuthenticated && <Route path="/bookmarks" element={<Bookmarks />} />}
         {isAuthenticated && <Route path="/admin" element={<AdminPanel />} />}
-        <Route path="/codechef" element={<CodeChefContests />} />
+        {/* <Route path="/codechef" element={<CodeChefContests />} /> */}
         {!isAuthenticated && <Route path="/login" element={<Login />} />}
         {!isAuthenticated && <Route path="/signup" element={<Signup />} />}
       </Routes>
