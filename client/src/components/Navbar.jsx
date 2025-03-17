@@ -43,7 +43,7 @@ const Navbar = () => {
           TLE Tracker
         </Link>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button while responsiveness */}
         <button className="md:hidden text-2xl transition duration-300 hover:text-gray-400" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
